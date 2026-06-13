@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>心の診断チェックリスト｜他人軸レベル診断</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Kaku Gothic ProN','Hiragino Sans',Meiryo,sans-serif;background:#F4F2FD;min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:2rem 1rem}
+.container{width:100%;max-width:560px;margin:0 auto}
+.card{background:#fff;border-radius:20px;padding:2rem 1.75rem;box-shadow:0 4px 24px rgba(83,74,183,0.10)}
+.header{text-align:center;margin-bottom:1.75rem}
+.header .label{display:inline-block;background:#EEEDFE;color:#534AB7;font-size:12px;font-weight:600;letter-spacing:0.1em;padding:4px 14px;border-radius:20px;margin-bottom:12px}
+.header h1{font-size:20px;font-weight:700;color:#26215C;line-height:1.5}
+.header p{font-size:13px;color:#888;margin-top:8px;line-height:1.6}
+.progress-wrap{margin-bottom:1.5rem}
+.progress-track{height:6px;background:#EEEDFE;border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#7F77DD,#534AB7);border-radius:3px;transition:width 0.4s ease}
+.progress-label{font-size:12px;color:#888;margin-top:6px;text-align:right}
+.q-num{font-size:12px;font-weight:700;color:#7F77DD;letter-spacing:0.05em;margin-bottom:10px}
+.q-text{font-size:16px;color:#26215C;line-height:1.7;font-weight:500;margin-bottom:1.25rem}
+.options{display:flex;flex-direction:column;gap:10px}
+.opt-btn{background:#F9F8FF;border:1.5px solid #E0DEF7;border-radius:12px;padding:12px 16px;font-size:14px;color:#3C3489;text-align:left;cursor:pointer;transition:all 0.15s;line-height:1.5;font-family:inherit}
+.opt-btn:hover{background:#EEEDFE;border-color:#AFA9EC}
+.opt-btn.selected{background:#EEEDFE;border-color:#7F77DD;color:#26215C;font-weight:600}
+.nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;gap:12px}
+.nav-btn{flex:1;border-radius:12px;padding:12px 0;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.15s;font-family:inherit;border:1.5px solid #D0CDF0;background:#fff;color:#534AB7}
+.nav-btn:hover{background:#EEEDFE}
+.nav-btn.primary{background:#534AB7;border-color:#534AB7;color:#fff}
+.nav-btn.primary:hover{background:#3C3489}
+.nav-btn:disabled{opacity:0.35;cursor:not-allowed}
+
+/* Result */
+.result-header{text-align:center;margin-bottom:1.5rem}
+.result-badge{display:inline-block;font-size:12px;font-weight:700;letter-spacing:0.08em;padding:4px 14px;border-radius:20px;margin-bottom:12px}
+.result-score{font-size:42px;font-weight:700;margin-bottom:4px}
+.result-title{font-size:19px;font-weight:700;line-height:1.5;margin-bottom:0.5rem}
+.result-sub{font-size:13px;color:#888;line-height:1.6}
+.level-bar-wrap{background:#F4F2FD;border-radius:12px;padding:1rem 1.25rem;margin:1.25rem 0}
+.level-bar-labels{display:flex;justify-content:space-between;font-size:12px;color:#888;margin-bottom:8px}
+.level-bar{height:10px;background:#E0DEF7;border-radius:5px;overflow:hidden}
+.level-fill{height:100%;border-radius:5px;transition:width 0.7s ease}
+.result-desc{font-size:14px;color:#444;line-height:1.8;margin-bottom:1.25rem}
+.signs-box{background:#F9F8FF;border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.5rem}
+.signs-title{font-size:13px;font-weight:700;color:#534AB7;margin-bottom:10px}
+.signs-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+.signs-list li{font-size:13px;color:#444;padding-left:20px;position:relative;line-height:1.6}
+.signs-list li::before{content:"✦";color:#7F77DD;position:absolute;left:0;font-size:11px;top:2px}
+.cta-box{background:linear-gradient(135deg,#534AB7,#7F77DD);border-radius:16px;padding:1.5rem;text-align:center}
+.cta-box p{font-size:14px;color:rgba(255,255,255,0.9);line-height:1.7;margin-bottom:1.25rem}
+.cta-btn{display:block;background:#fff;color:#534AB7;border-radius:12px;padding:15px 20px;font-size:15px;font-weight:700;text-align:center;text-decoration:none;transition:all 0.15s;font-family:inherit;border:none;cursor:pointer;width:100%}
+.cta-btn:hover{background:#EEEDFE;transform:translateY(-1px)}
+.retry-btn{display:block;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.4);border-radius:12px;padding:11px 20px;font-size:14px;color:#fff;text-align:center;cursor:pointer;margin-top:10px;width:100%;font-family:inherit;transition:all 0.15s}
+.retry-btn:hover{background:rgba(255,255,255,0.25)}
+.divider{height:1px;background:#EEE;margin:1.5rem 0}
+
+@media(max-width:480px){
+  body{padding:1rem 0.75rem}
+  .card{padding:1.5rem 1.25rem;border-radius:16px}
+  .header h1{font-size:18px}
+  .q-text{font-size:15px}
+  .result-score{font-size:36px}
+  .result-title{font-size:17px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <div id="quiz-view">
+      <div class="header">
+        <div class="label">心の診断チェックリスト</div>
+        <h1>あなたの「他人軸レベル」を<br>チェックしてみましょう</h1>
+        <p>全10問・所要時間約2分<br>正直に答えるほど、より正確な結果が出ます</p>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-track"><div class="progress-fill" id="prog" style="width:10%"></div></div>
+        <div class="progress-label" id="prog-label">1 / 10</div>
+      </div>
+      <div class="q-num" id="q-num">Q1</div>
+      <div class="q-text" id="q-text"></div>
+      <div class="options" id="options"></div>
+      <div class="nav">
+        <button class="nav-btn" id="btn-prev" onclick="goBack()" disabled>← 戻る</button>
+        <button class="nav-btn primary" id="btn-next" onclick="goNext()" disabled>次へ →</button>
+      </div>
+    </div>
+
+    <div id="result-view" style="display:none">
+      <div class="result-header">
+        <div class="result-badge" id="r-badge"></div>
+        <div class="result-score" id="r-score"></div>
+        <div class="result-title" id="r-title"></div>
+        <div class="result-sub">他人軸レベル診断結果</div>
+      </div>
+      <div class="level-bar-wrap">
+        <div class="level-bar-labels"><span>🌱 自分軸</span><span>他人軸 😮‍💨</span></div>
+        <div class="level-bar"><div class="level-fill" id="r-bar"></div></div>
+      </div>
+      <div class="result-desc" id="r-desc"></div>
+      <div class="divider"></div>
+      <div class="signs-box">
+        <div class="signs-title">あなたに見られる心のサイン</div>
+        <ul class="signs-list" id="r-signs"></ul>
+      </div>
+      <div class="cta-box">
+        <p id="r-cta-text"></p>
+        <a class="cta-btn" href="https://utage-system.com/p/rgidMuCUEihN" target="_blank">続きを知りたい方へ →</a>
+        <button class="retry-btn" onclick="restart()">もう一度診断する</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+const questions=[
+  {text:"誰かに何かを頼まれると、本当は断りたくても「いいですよ」と言ってしまう"},
+  {text:"自分の意見を言った後、「相手を傷つけたかも」と後悔することがある"},
+  {text:"職場や人間関係の場で、場の空気を読みすぎて自分が疲れてしまう"},
+  {text:"「自分さえ我慢すれば丸く収まる」と思って行動することがある"},
+  {text:"誰かが不機嫌そうにしていると、自分のせいかもと心配になる"},
+  {text:"本当にしたいことがあっても、「わがままかも」と感じて言い出せない"},
+  {text:"頑張っているのに「もっとできるはず」と自分を責めることがある"},
+  {text:"誰かに感謝されたり褒められないと、自分の価値がわからなくなる"},
+  {text:"友人・同僚の様子が心配で、自分のことを後回しにしてしまう"},
+  {text:"限界を感じていても、「まだ大丈夫」と自分に言い聞かせてしまう"}
+];
+const opts=["ほぼ毎回そう","よくある","たまにある","ほとんどない"];
+const results=[
+  {min:0,max:12,badge:"自分軸タイプ",badgeBg:"#EAF3DE",badgeColor:"#3B6D11",score:"低め",scoreColor:"#63992A",title:"自分軸がしっかりしているタイプ",desc:"今のところ他人軸の傾向は低めです。ただし、環境の変化やストレスで変わることがあります。自分の感覚を大切にしながら、無理のないペースで過ごしてください。",signs:["時々「もっと頑張らないと」と感じることがある","場の雰囲気に敏感になることがある"],barColor:"#63992A",barPct:"20%",ctaText:"この診断でわかったのは、ほんの入り口です。あなたの潜在意識の奥に、まだ気づいていないパターンが眠っています。"},
+  {min:13,max:22,badge:"要注意タイプ",badgeBg:"#FAEEDA",badgeColor:"#854F0B",score:"やや高め",scoreColor:"#BA7517",title:"少しずつ我慢が積み重なっているタイプ",desc:"気づかないうちに周りの期待に応えようと頑張りすぎているサインが見られます。まだ余裕があるうちに、自分の感情と向き合うことをおすすめします。",signs:["断るのが苦手で後悔することがある","誰かの反応が気になって疲れることがある","「自分さえ我慢すれば」と思いがち"],barColor:"#EF9F27",barPct:"55%",ctaText:"この診断でわかったのは、ほんの入り口です。あなたの潜在意識の奥に、まだ気づいていないパターンが眠っています。"},
+  {min:23,max:30,badge:"要サポートタイプ",badgeBg:"#FAECE7",badgeColor:"#993C1D",score:"かなり高め",scoreColor:"#D85A30",title:"心が限界に近づいているかもしれないタイプ",desc:"他人の気持ちを優先し続けるあまり、自分の気持ちを長い間押さえ込んできた可能性があります。「もう無理」となる前に、今すぐ自分を最優先に考えてください。あなたが頑張ってきたことは本物です。",signs:["突然何もやる気が出なくなることがある","感情が急に溢れてくることがある","ある日突然「もう限界」と感じることがある","人から離れたい・連絡を取りたくない時がある"],barColor:"#D85A30",barPct:"88%",ctaText:"この診断でわかったのは、ほんの入り口です。あなたの潜在意識の奥に、まだ気づいていないパターンが眠っています。"}
+];
+let current=0,answers=Array(10).fill(null);
+function render(){
+  const q=questions[current];
+  document.getElementById("q-num").textContent="Q"+(current+1);
+  document.getElementById("q-text").textContent=q.text;
+  const el=document.getElementById("options");
+  el.innerHTML="";
+  opts.forEach((o,i)=>{
+    const btn=document.createElement("button");
+    btn.className="opt-btn"+(answers[current]===i?" selected":"");
+    btn.textContent=o;
+    btn.onclick=()=>select(i);
+    el.appendChild(btn);
+  });
+  document.getElementById("prog").style.width=((current+1)/10*100)+"%";
+  document.getElementById("prog-label").textContent=(current+1)+" / 10";
+  document.getElementById("btn-prev").disabled=current===0;
+  document.getElementById("btn-next").textContent=current===9?"結果を見る ✦":"次へ →";
+  document.getElementById("btn-next").disabled=answers[current]===null;
+}
+function select(i){
+  answers[current]=i;
+  document.querySelectorAll(".opt-btn").forEach((b,idx)=>{
+    b.className="opt-btn"+(idx===i?" selected":"");
+  });
+  document.getElementById("btn-next").disabled=false;
+}
+function goNext(){
+  if(answers[current]===null)return;
+  if(current<9){current++;render();}
+  else showResult();
+}
+function goBack(){if(current>0){current--;render();}}
+function showResult(){
+  const total=answers.reduce((s,a)=>s+(3-a),0);
+  const r=results.find(x=>total>=x.min&&total<=x.max)||results[2];
+  const badge=document.getElementById("r-badge");
+  badge.textContent=r.badge;
+  badge.style.background=r.badgeBg;
+  badge.style.color=r.badgeColor;
+  const scoreEl=document.getElementById("r-score");
+  scoreEl.textContent=total+"点 / 30点";
+  scoreEl.style.color=r.scoreColor;
+  document.getElementById("r-title").textContent=r.title;
+  document.getElementById("r-desc").textContent=r.desc;
+  document.getElementById("r-bar").style.width=r.barPct;
+  document.getElementById("r-bar").style.background=r.barColor;
+  const signs=document.getElementById("r-signs");
+  signs.innerHTML="";
+  r.signs.forEach(s=>{const li=document.createElement("li");li.textContent=s;signs.appendChild(li);});
+  document.getElementById("r-cta-text").textContent=r.ctaText;
+  document.getElementById("quiz-view").style.display="none";
+  document.getElementById("result-view").style.display="block";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function restart(){
+  current=0;answers=Array(10).fill(null);
+  document.getElementById("result-view").style.display="none";
+  document.getElementById("quiz-view").style.display="block";
+  render();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+render();
+</script>
+</body>
+</html>
